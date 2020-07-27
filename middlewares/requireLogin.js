@@ -9,11 +9,10 @@ module.exports = async (req, res, next) => {
         return res.status(401).json({error: "Bạn phải đăng nhập"})
     }
     const token = authorization.replace("Bearer ","");
-    await jwt.verify(token, JWT_SECRET ,(err, payload) => {
-        if(err){
-            return res.status(401).json({err: "Bạn phải đăng nhập"});
+    await jwt.verify(token, JWT_SECRET ,(error, payload) => {
+        if(error){
+            return res.status(401).json({error: "Bạn phải đăng nhập"});
         }
-
         const {_id} = payload;
         User.findById(_id).then((userdata) => {
             req.user = userdata;

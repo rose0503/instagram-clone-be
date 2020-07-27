@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 const Post = require('../models/post.model');
 
 module.exports.createPost = (req, res) => {
-    const {title, body} = req.body;
-    if(!title || !body){
-        return res.status(422).json({err: "Vui lòng điền tiêu đề và nội dung!"});
+    const {title, body, pic} = req.body;
+    if(!title || !body || !pic){
+        return res.status(422).json({error: "Vui lòng điền thông tin đầy đủ!"});
     }
     req.user.password = undefined;
     const post = new Post({
         title,
         body,
+        photo: pic,
         postedBy: req.user
     })
     post.save().then(result => {
@@ -20,9 +21,12 @@ module.exports.createPost = (req, res) => {
      })
 };
 
+
+
 module.exports.allPost = (req, res) => {
     Post.find()
      .populate('postedBy', "_id name")
+     .populate('comments.postedBy', "_id name")
      .then(posts => {
          res.json({posts});
      })
@@ -40,4 +44,82 @@ module.exports.myPost = (req, res) => {
      .catch(err => {
          console.log(err);
      })
+}
+
+module.exports.like = (req, res) => {
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push: {likes:req.user._id}, 
+    },{
+        new: true
+    })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result)=>{
+        if(err){
+            return res.status(422).json({error: err});
+        }else{
+            res.json(result)
+        }
+    })
+    
+}
+
+module.exports.unlike = ((req,res)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $pull:{likes:req.user._id}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+    
+     
+})
+
+module.exports.comment = ((req,res)=>{
+    const comment ={
+        text: req.body.text,
+        postedBy: req.user._id
+    }
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{comments:comment}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+     
+})
+
+
+module.exports.deletepost = (req, res) => {
+    Post.findOne({_id:req.params.postId})
+    .populate("postedBy", "_id")
+    .exec((err, post)=>{
+        if(err || !post){
+            return res.status(422).json({error:err})
+        }
+        if(post.postedBy._id.toString() === req.user._id.toString()){
+            post.remove()
+            .then(result => {
+                res.json(result)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    })
 }

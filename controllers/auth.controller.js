@@ -8,7 +8,7 @@ const {JWT_SECRET} = require('../keys');
 module.exports.signup = async (req, res) => {
     const {name, email, password} = req.body;
     if(!name || !password || !email){
-       return res.status(422).json({err:"Vui lòng nhập thông tin!"});
+       return res.status(422).json({err:"Vui lòng điền đầy đủ thông tin!"});
     }
     await User.findOne({email})
      .then((saveUser) => {
@@ -54,8 +54,8 @@ module.exports.signin = async (req, res) => {
                      if(doMatch){
                         //  res.json({messenge: "Đăng nhập thành công"});
                         const token = jwt.sign({_id: savedUser._id}, JWT_SECRET);
-                        const {_id, email, password} = savedUser;
-                        res.json({token, user:{_id, email, password}});
+                        const {_id, email, password,name} = savedUser;
+                        res.json({token, user:{_id, email, password, name}});
                      }
                      else{ 
                          return res.status(422).json({error: "email và password không đúng"});
