@@ -24,7 +24,7 @@ build/Release
 
 # Dependency directory
 # https://docs.npmjs.com/cli/shrinkwrap#caveats
-node_modules/
+node_modules/  
 
 
 
@@ -35,4 +35,4 @@ npm-debug.log
 
 .env
 
-dev.js
+dev.js 
