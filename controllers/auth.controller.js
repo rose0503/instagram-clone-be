@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('../keys');
+const {JWT_SECRET} = require('../config/keys');
 
 
 module.exports.signup = async (req, res) => {
-    const {name, email, password} = req.body;
+    const {name, email, password,pic} = req.body;
     if(!name || !password || !email){
        return res.status(422).json({err:"Vui lòng điền đầy đủ thông tin!"});
     }
@@ -21,7 +21,8 @@ module.exports.signup = async (req, res) => {
             const user = new User({
                 email,
                 password: hashedpassword, 
-                name
+                name,
+                pic
             })
             user.save()
              .then(user => {
@@ -54,8 +55,8 @@ module.exports.signin = async (req, res) => {
                      if(doMatch){
                         //  res.json({messenge: "Đăng nhập thành công"});
                         const token = jwt.sign({_id: savedUser._id}, JWT_SECRET);
-                        const {_id, email, password,name} = savedUser;
-                        res.json({token, user:{_id, email, password, name}});
+                        const {_id, email, password,name, followers, following,pic} = savedUser;
+                        res.json({token, user:{_id, email, password, name, followers, following,pic}});
                      }
                      else{ 
                          return res.status(422).json({error: "email và password không đúng"});

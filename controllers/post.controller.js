@@ -35,6 +35,18 @@ module.exports.allPost = (req, res) => {
      })
 };
 
+module.exports.getsubpost = (req, res) => {
+    Post.find({postedBy:{$in:req.user.following}})
+     .populate('postedBy', "_id name")
+     .populate('comments.postedBy', "_id name")
+     .then(posts => {
+         res.json({posts});
+     })
+     .catch(err => {
+         console.log(err);
+     })
+};
+
 module.exports.myPost = (req, res) => {
     Post.find({postedBy: req.user._id})
      .populate('postedBy', "_id name")

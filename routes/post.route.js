@@ -10,6 +10,8 @@ router.post('/createpost', requireLogin , controller.createPost);
 
 router.get('/mypost', requireLogin , controller.myPost);  
 
+router.get('/getsubpost', requireLogin , controller.getsubpost);  
+
 router.put('/like', requireLogin , controller.like);  
 
 router.put('/unlike', requireLogin , controller.unlike); 
