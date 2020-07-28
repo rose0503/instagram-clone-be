@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --inspect app.js",
     "start": "node app.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
@@ -21,5 +19,9 @@
   "devDependencies": {
     "nodemon": "^2.0.4"
   },
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "12.6",
+    "npm": "6.13"
+  }
 }
