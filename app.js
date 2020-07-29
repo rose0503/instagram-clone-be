@@ -13,8 +13,7 @@ mongoose.connect(MONGOURI,
          .catch(err => console.log("MongoDB can't connect", err)
     )
 
-
-app.use(corsMiddleware);
+app.use(corsMiddleware); 
 
 //set
 app.use(express.json());
