@@ -12,4 +12,6 @@ router.put('/unfollow', requireLogin, controller.unfollow);
 
 router.put('/updatepic', requireLogin, controller.updatepic);
 
+router.post('/search-user', requireLogin, controller.searchuser);
+
 module.exports = router;
