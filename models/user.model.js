@@ -20,7 +20,10 @@ const userSchema = new mongoose.Schema({
         default: "https://res.cloudinary.com/quocviet0503/image/upload/v1595881667/default-avatar_haphbj.png"
     },
     followers: [{type: ObjectId, ref: "User"}],
-    following: [{type: ObjectId, ref: "User"}]
+    following: [{type: ObjectId, ref: "User"}],
+    notifi: {
+        type: String
+    }
 })
 var User = mongoose.model("User", userSchema);
 module.exports = User;

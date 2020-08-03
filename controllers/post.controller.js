@@ -25,8 +25,8 @@ module.exports.createPost = (req, res) => {
 
 module.exports.allPost = (req, res) => {
     Post.find()
-     .populate('postedBy', "_id name")
-     .populate('comments.postedBy', "_id name")
+     .populate('postedBy', "_id name createdAt pic")
+     .populate('comments.postedBy', "_id name createdAt pic")
      .sort("-createdAt")
      .then(posts => {
          res.json({posts});
@@ -38,8 +38,8 @@ module.exports.allPost = (req, res) => {
 
 module.exports.getsubpost = (req, res) => {
     Post.find({postedBy:{$in:req.user.following}})
-     .populate('postedBy', "_id name")
-     .populate('comments.postedBy', "_id name")
+     .populate('postedBy', "_id name pic createdAt")
+     .populate('comments.postedBy', "_id name pic createdAt")
      .sort("-createdAt")
      .then(posts => {
          res.json({posts});
@@ -66,8 +66,8 @@ module.exports.like = (req, res) => {
     },{
         new: true
     })
-    .populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name pic createdAt")
+    .populate("postedBy", "_id name pic createdAt")
     .exec((err, result)=>{
         if(err){
             return res.status(422).json({error: err});
@@ -84,8 +84,8 @@ module.exports.unlike = ((req,res)=>{
     },{
         new:true
     })
-    .populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name pic createdAt")
+    .populate("postedBy", "_id name pic createdAt")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
@@ -100,19 +100,21 @@ module.exports.unlike = ((req,res)=>{
 module.exports.comment = ((req,res)=>{
     const comment ={
         text: req.body.text,
-        postedBy: req.user._id
+        postedBy: req.user._id,
+        date: Date.now()
     }
     Post.findByIdAndUpdate(req.body.postId,{
         $push:{comments:comment}
     },{
         new:true
     })
-    .populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name pic createdAt")
+    .populate("postedBy", "_id name pic createdAt")
     .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
+            User
             res.json(result)
         }
     })
