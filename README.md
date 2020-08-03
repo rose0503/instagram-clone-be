@@ -12,6 +12,7 @@ Restful server with
 - Mongoose + MongoDB(MongoDB Atlas)
 - Authentication with jwt
 - Store photos in Cloudinary
+- Email in SendGrid
 
 ## Install package
 Use the package manager npm to install dependencies.
