@@ -2,28 +2,31 @@
 clone instagram backend with expressjs-nodejs
 
 ## Requirements
-Node
-MongoDB server(local or cloud)
+- Node
+- MongoDB server(local or cloud)
 
 ## Using
 Restful server with
 
-Express
-Mongoose + MongoDB(MongoDB Atlas)
-Authentication with jwt
-Store photos in Cloudinary
+- Express
+- Mongoose + MongoDB(MongoDB Atlas)
+- Authentication with jwt
+- Store photos in Cloudinary
 
 ## Install package
 Use the package manager npm to install dependencies.
-
-> npm i
+```
+ npm i
+```
 ## Run local
 run with node
-
-> npm start
+```
+npm start
+```
 run with nodemon
-
-> npm run dev
+```
+npm run dev
+```
 
 ## Demo
 [Link-Demo](https://instagram-clone-full.herokuapp.com/)
