@@ -114,7 +114,7 @@ module.exports.comment = ((req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
-            User
+            
             res.json(result)
         }
     })
